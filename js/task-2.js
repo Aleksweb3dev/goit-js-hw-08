@@ -25,21 +25,20 @@ const images = [
   },
 ];
 
+// images.forEach(image => {
+//   const li = document.createElement('li');
+//   const img = document.createElement('img');
+
+//   img.src = image.url;
+//   img.alt = image.alt;
+//   img.width = 300;
+//   img.height = 360;
+
+//   li.appendChild(img);
+//   gallery.appendChild(li);
+// });
 const gallery = document.querySelector('.gallery');
-images.forEach(image => {
-  const li = document.createElement('li');
-  const img = document.createElement('img');
-
-  img.src = image.url;
-  img.alt = image.alt;
-  img.width = 300;
-  img.height = 360;
-
-  li.appendChild(img);
-  gallery.appendChild(li);
-});
-
-// const markup = images
-//   .map(image => `<li><img src="${image.url}" alt="${image.alt}" width="360" height="300" /></li>`)
-//   .join('');
-// gallery.insertAdjacentHTML('beforeend', markup);
+const markup = images
+  .map(image => `<li><img src="${image.url}" alt="${image.alt}" width="360" height="300" /></li>`)
+  .join('');
+gallery.insertAdjacentHTML('beforeend', markup);
