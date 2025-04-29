@@ -76,6 +76,50 @@ function handleItem(event) {
     return;
   }
   const largeImg = image.dataset.source;
-  const instance = basicLightbox.create(`<img src="${largeImg}" width="1112" height="640">`);
-  instance.show();
+  // const instance = basicLightbox.create(`<img src="${largeImg}" width="1112" height="640">`);
+  // instance.show();
+  let currentIndex = images.findIndex(image => image.original === largeImg);
+
+  const instanceStep = basicLightbox.create(`<div class="modal">
+  <button class="prev-button">⬅️</button>
+  <img src="${images[currentIndex].original}" alt="${images[currentIndex].description}" class="modal-image" style="max-width:90vw; max-height:90vh;">
+  <button class="next-button">➡️</button>
+  <p style="color: white;">Для выхода нажмите Escape иил кликните мышью</p>
+</div>
+`);
+  instanceStep.show();
+  const findButton = instanceStep.element().querySelector('.next-button');
+  const findImg = instanceStep.element().querySelector('.modal-image');
+  const findPrevButton = instanceStep.element().querySelector('.prev-button');
+  findPrevButton.addEventListener('click', clickBtn);
+  findButton.addEventListener('click', clickBtn);
+  function clickBtn(event) {
+    if (event.target === findButton) {
+      currentIndex = (currentIndex + 1) % images.length;
+    } else if (event.target === findPrevButton) {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+    }
+    findImg.src = images[currentIndex].original;
+    findImg.alt = images[currentIndex].description;
+  }
+
+  document.addEventListener('keydown', onKeyDown);
+  function onKeyDown(event) {
+    if (event.key === 'ArrowRight') {
+      currentIndex = (currentIndex + 1) % images.length;
+      findImg.src = images[currentIndex].original;
+      findImg.alt = images[currentIndex].description;
+    }
+
+    if (event.key === 'ArrowLeft') {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      findImg.src = images[currentIndex].original;
+      findImg.alt = images[currentIndex].description;
+    }
+
+    if (event.key == 'Escape') {
+      instanceStep.close();
+      document.removeEventListener('keydown', escKeyDown);
+    }
+  }
 }
